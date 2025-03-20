@@ -96,7 +96,7 @@ program     ::= stmt_seq:s	{: if(debug) System.out.println("\t regla 1");
 					:}
 		;
 
-stmt_seq    ::= stmt_seq:ini SEMI stmt:sent	{: if(debug) System.out.println("\t regla 2a"); 
+stmt_seq    ::= stmt_seq:ini SEMI stmt:sent	 {: if(debug) System.out.println("\t regla 2a");
 						NodoBase hijoActual = ini;
 						if(hijoActual !=null){
 							while(hijoActual.TieneHermano()){
@@ -108,27 +108,49 @@ stmt_seq    ::= stmt_seq:ini SEMI stmt:sent	{: if(debug) System.out.println("\t 
 							RESULT=sent;
 						}
 						:}
-            | stmt:sent	{: if(debug) System.out.println("\t regla 2b"); 
-				RESULT=sent;				
+            | stmt:sent	{: if(debug) System.out.println("\t regla 2b");
+				RESULT=sent;
 				:}
 		;
 
-stmt        ::= if_stmt:sif	{: if(debug) System.out.println("\t regla 3a"); 
+
+stmt        ::= if_stmt:sif	{: if(debug) System.out.println("\t regla 3a"); // Funciona para condicionales simples, no para anidados
 					RESULT=sif;
 					:}
-            | repeat_stmt:srep	{: if(debug) System.out.println("\t regla 3b"); 
-						RESULT=srep;
-						:}
-            | assign_stmt:sasi	{: if(debug) System.out.println("\t regla 3c"); 
+            | assign_stmt:sasi	{: if(debug) System.out.println("\t regla 3b");
 						RESULT=sasi;
 						:}
-            | read_stmt:slec	{: if(debug) System.out.println("\t regla 3d"); 
+            | read_stmt:slec	{: if(debug) System.out.println("\t regla 3c");
 					RESULT=slec;
 					:}
-            | write_stmt:sesc	{: if(debug) System.out.println("\t regla 3e"); 
+            | write_stmt:sesc	{: if(debug) System.out.println("\t regla 8d");
 					RESULT=sesc;
 					:}
-            | error	{: if(debug) System.out.println("\t regla 3f"); 
+			| for_stmt:sfor {: if(debug) System.out.println("\t regla 8f");
+			        RESULT = sfor;
+			        :}
+            | error	{: if(debug) System.out.println("\t regla 500");
+				System.out.println("Ocurrio e9rror en cup # 0004");
+				RESULT=null;
+				:}
+            ;
+
+stmt        ::= if_stmt:sif	{: if(debug) System.out.println("\t regla 3a");
+					RESULT=sif;
+					:}
+            | repeat_stmt:srep	{: if(debug) System.out.println("\t regla 3b");
+						RESULT=srep;
+						:}
+            | assign_stmt:sasi	{: if(debug) System.out.println("\t regla 3c");
+						RESULT=sasi;
+						:}
+            | read_stmt:slec	{: if(debug) System.out.println("\t regla 3d");
+					RESULT=slec;
+					:}
+            | write_stmt:sesc	{: if(debug) System.out.println("\t regla 3e");
+					RESULT=sesc;
+					:}
+            | error	{: if(debug) System.out.println("\t regla 3f");
 				System.out.println("Ocurrio error en cup # 0004");
 				RESULT=null;
 				:}
