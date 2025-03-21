@@ -1,0 +1,12 @@
+VAR
+  i: INTEGER;
+  j: INTEGER;
+BEGIN
+  i:10;
+  j:=2;
+    WRITE(i + j);
+    WRITE(i - j);
+    WRITE(i * j);
+    WRITE(i / j);
+    WRITE(i MOD j);
+END

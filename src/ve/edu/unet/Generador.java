@@ -56,7 +56,7 @@ public class Generador {
 	}
 
 	//Funcion principal de generacion de codigo
-	//prerequisito: Fijar la tabla de simbolos antes de generar el codigo objeto 
+	//prerequisito: Fijar la tabla de simbolos antes de generar el codigo objeto
 	private static void generar(NodoBase nodo){
 		if(tablaSimbolos!=null){
 			if (nodo instanceof  NodoIf){
@@ -86,7 +86,7 @@ public class Generador {
 			if(nodo.TieneHermano())
 				generar(nodo.getHermanoDerecha());
 		}else
-			System.out.println("???ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
+			System.out.println("¡¡¡ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 	}
 
 	private static void generarPrograma(NodoBase nodo){
@@ -232,29 +232,29 @@ public class Generador {
 
 		if(UtGen.debug) UtGen.emitirComentario("-> for");
 
-		// Paso 1: Inicializar la variable del ciclo
+
 		generar(n.getValorInicial());
 		direccionVariable = tablaSimbolos.getDireccion(n.getNombreVariable());
 		UtGen.emitirRM("ST", UtGen.AC, direccionVariable, UtGen.GP, "for: inicializar " + n.getNombreVariable());
 
-		// Paso 2: Generar etiqueta de inicio del ciclo para saltos
+		//Generar etiqueta de inicio del ciclo para saltos
 		localidadSaltoInicio = UtGen.emitirSalto(0);
 
-		// Paso 3: Comparar variable con el valor final
+
 		UtGen.emitirRM("LD", UtGen.AC, direccionVariable, UtGen.GP, "for: cargar valor de " + n.getNombreVariable());
 		generar(n.getValorFinal());
 		UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC, UtGen.AC1, "for: comparar " + n.getNombreVariable() + " con su valor final");
-		localidadSaltoFin = UtGen.emitirSalto(1); // Preparar salto si la condici?n es falsa
+		localidadSaltoFin = UtGen.emitirSalto(1); // Preparar salto si la condición es falsa
 
-		// Paso 4: Generar el cuerpo del ciclo
+
 		generar(n.getCuerpo());
 
-		// Paso 5: Incrementar la variable del ciclo
+
 		UtGen.emitirRM("LDA", UtGen.AC1, 1, UtGen.AC, "for: incrementar valor de " + n.getNombreVariable());
 		UtGen.emitirRM("ST", UtGen.AC1, direccionVariable, UtGen.GP, "for: guardar valor incrementado de " + n.getNombreVariable());
 		UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadSaltoInicio, "for: saltar al inicio del ciclo");
 
-		// Paso 6: Colocar la etiqueta de salida del ciclo
+
 		int localidadActual = UtGen.emitirSalto(0);
 		UtGen.cargarRespaldo(localidadSaltoFin);
 		UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadActual, "for: salir del ciclo si " + n.getNombreVariable() + " > valor final");
